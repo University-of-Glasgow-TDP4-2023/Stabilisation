@@ -31,12 +31,14 @@ void setup(){
 
 void turn_right(float a){
     gpio_put(out1,0);
-    gpio_put(out2,a);
+    gpio_put(out2,1);
+    gpio_put(enA, a); // this needs to be a pwm
 }
 
 void turn_left(float a){
-    gpio_put(out1,a);
+    gpio_put(out1,1);
     gpio_put(out2,0);
+    gpio_put(enA, a); // this needs to be a pwm
 }
 
 void stop(){
