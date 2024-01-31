@@ -4,7 +4,7 @@
  #include "hardware/pwm.h"
 // https://github.com/raspberrypi/pico-examples/blob/master/pwm/measure_duty_cycle/measure_duty_cycle.c
 
-#define delay 1000
+#define delay 100
 #define out1 6
 #define out2 7
 #define enA 8
@@ -71,7 +71,7 @@ int main(){
             turn_left(result * -1);
             printf("Turn left\n\r");
          }else if (result_norm > bounds){
-            turn_right(result);
+            turn_right(2^16 - 1);
             printf("Turn right\n\r");
          }
 
