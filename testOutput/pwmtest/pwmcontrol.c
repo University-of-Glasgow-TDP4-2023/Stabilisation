@@ -82,7 +82,6 @@ int main(){
          uint16_t result = adc_read();
          // 12-bit conversion, assume max value == ADC_VREF == 3.3 V
          //  printf("Raw value: 0x%03x, voltage: %f V\n", result, result * conversion_factor); // result in voltage mode
-         get_
          motor_drive(result);
          sleep_ms(delay);
     }
