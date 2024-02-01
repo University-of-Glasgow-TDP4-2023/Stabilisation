@@ -10,7 +10,7 @@
 #define enA 8
 #define pot 26
 #define bounds 0.05
-#define wrap 3
+#define wrap 1000
 
 
 // Defining motor pins
@@ -38,18 +38,19 @@ void setup(){
 void turn_right(float a){
     gpio_put(out1,0);
     gpio_put(out2,1);
-    pwm_set_gpio_level(enA, a-1);
+    pwm_set_gpio_level(enA, a);
 }
 
 void turn_left(float a){
     gpio_put(out1,1);
     gpio_put(out2,0);
-    pwm_set_gpio_level(enA, (-a)-1);
+    pwm_set_gpio_level(enA, (int)(-a));
 }
 
 void stop(){
     gpio_put(out1,0);
     gpio_put(out2,0);
+    pwm_set_gpio_level(enA, 0);
 }
 
 
