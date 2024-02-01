@@ -1,3 +1,4 @@
 .vscode
+build
 testOutput/build/*
 pico-sdk

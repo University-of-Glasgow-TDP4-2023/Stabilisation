@@ -9,6 +9,7 @@ if (TARGET tinyusb_device)
         pico_stdlib 
         hardware_gpio
         hardware_adc
+        hardware_pwm
         )
 
     # enable usb output, disable uart output
