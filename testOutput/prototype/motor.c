@@ -1,8 +1,7 @@
- #include <stdio.h>
- #include "pico/stdlib.h"
- #include "hardware/adc.h"
- #include "hardware/pwm.h"
-// https://github.com/raspberrypi/pico-examples/blob/master/pwm/measure_duty_cycle/measure_duty_cycle.c
+#include "include/motor.h"
+#include <stdio.h>
+#include "pico/stdlib.h"
+#include "hardware/pwm.h"
 
 #define delay 100
 #define out1 6
@@ -12,30 +11,34 @@
 #define bounds 0.05
 #define wrap 1000
 
+
 const float conversion_factor = 3.3f / (1 << 12);
 const float normalised_conversion_factor = conversion_factor / 3.3f ;
 
 
-// Defining motor pins
-void setup(){
-    adc_init(); // for the pot input
-    gpio_init(out1);
-    gpio_init(out2);
-    gpio_set_function(enA, GPIO_FUNC_PWM);
-    adc_gpio_init(pot);
+void motor_driver_init(Motor *motor, int in1, int in2, int enableA){
+    // Setup the GPIO pins
+    gpio_init(in1);
+    gpio_init(in2);
+    gpio_set_dir(in1, GPIO_OUT);
+    gpio_set_dir(in2, GPIO_OUT);
 
-    gpio_set_dir(out1, GPIO_OUT);
-    gpio_set_dir(out2, GPIO_OUT);
+    // Setup the PWN pin
+    gpio_set_function(enableA, GPIO_FUNC_PWM);
     uint slice_num = pwm_gpio_to_slice_num(enA);
-    adc_select_input(0);
-    
     pwm_set_wrap(slice_num, wrap);
 
-    gpio_put(out1,0);
-    gpio_put(out2,0);
-    pwm_set_gpio_level(enA, wrap);
+    // Intial states for pins
+    gpio_put(in1,0);
+    gpio_put(in2,0);
+    pwm_set_gpio_level(enableA, wrap);
     // pwm_set_chan_level(slice_num, PWM_CHAN_A, 100);
     pwm_set_enabled(slice_num, true);
+
+    // Populate the motor handle
+    motor->in1 = in1;
+    motor->in2 = in2;
+    motor->enableA = enableA;
 }
 
 void turn_right(float a){
@@ -56,7 +59,7 @@ void stop(){
     pwm_set_gpio_level(enA, 0);
 }
 
-void motor_drive(uint16_t result){
+void motor_drive(Motor *motor, uint16_t result){
     float result_norm = ((float)result * 2 * normalised_conversion_factor) - 1;
     printf("result -1 to 1 : %f \n", result_norm);
     float power = (result_norm * (wrap+1)); // gets -1 later
