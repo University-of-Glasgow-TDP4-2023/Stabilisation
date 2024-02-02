@@ -59,8 +59,8 @@ void stop(){
     pwm_set_gpio_level(enA, 0);
 }
 
-void motor_drive(Motor *motor, uint16_t result){
-    float result_norm = ((float)result * 2 * normalised_conversion_factor) - 1;
+void motor_drive(Motor *motor, uint16_t result_norm){
+    // float result_norm = ((float)result * 2 * normalised_conversion_factor) - 1;
     printf("result -1 to 1 : %f \n", result_norm);
     float power = (result_norm * (wrap+1)); // gets -1 later
     printf("power %f: ", power);
