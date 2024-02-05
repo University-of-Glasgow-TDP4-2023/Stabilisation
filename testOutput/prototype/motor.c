@@ -8,8 +8,8 @@
 #define out2 7
 #define enA 8
 #define pot 26
-#define bounds 0.05
-#define wrap 1000
+#define bounds 0.5
+#define wrap 5000
 
 
 const float conversion_factor = 3.3f / (1 << 12);
@@ -31,7 +31,7 @@ void motor_driver_init(Motor *motor, int in1, int in2, int enableA){
     // Intial states for pins
     gpio_put(in1,0);
     gpio_put(in2,0);
-    pwm_set_gpio_level(enableA, wrap);
+    pwm_set_gpio_level(enableA, 0);
     // pwm_set_chan_level(slice_num, PWM_CHAN_A, 100);
     pwm_set_enabled(slice_num, true);
 
@@ -41,38 +41,37 @@ void motor_driver_init(Motor *motor, int in1, int in2, int enableA){
     motor->enableA = enableA;
 }
 
-void turn_right(float a){
-    gpio_put(out1,0);
-    gpio_put(out2,1);
-    pwm_set_gpio_level(enA, a);
+void turn_right(Motor *motor, float a){
+    gpio_put(motor->in1,0);
+    gpio_put(motor->in2,1);
+    pwm_set_gpio_level(motor->enableA, (int)a);
 }
 
-void turn_left(float a){
-    gpio_put(out1,1);
-    gpio_put(out2,0);
-    pwm_set_gpio_level(enA, (int)(-a));
+void turn_left(Motor *motor, float a){
+    gpio_put(motor->in1,1);
+    gpio_put(motor->in2,0);
+    pwm_set_gpio_level(motor->enableA, (int)(-a));
 }
 
-void stop(){
-    gpio_put(out1,0);
-    gpio_put(out2,0);
-    pwm_set_gpio_level(enA, 0);
+void stop(Motor *motor){
+    gpio_put(motor->in1,0);
+    gpio_put(motor->in2,0);
+    pwm_set_gpio_level(motor->enableA, 0);
 }
 
-void motor_drive(Motor *motor){
+void motor_drive(Motor *motor, float result_norm){
     // float result_norm = ((float)result * 2 * normalised_conversion_factor) - 1;
-    float result_norm = motor->enableA;
     printf("result -1 to 1 : %f \n", result_norm);
-    float power = (result_norm * (wrap+1)); // gets -1 later
+    float power = (result_norm * wrap); // gets -1 later
     printf("power %f: ", power);
     if (result_norm <= bounds && result_norm >= (- bounds)) {
-        stop();
+        stop(motor);
         printf("stop\n\r");
     }else if (result_norm < - bounds){
-        turn_left(power);
+        turn_left(motor, power);
         printf("Turn left\n\r");
     }else if (result_norm > bounds){
-        turn_right(power);
+        turn_right(motor, power);
         printf("Turn right\n\r");
     }
 }

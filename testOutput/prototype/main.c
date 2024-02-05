@@ -7,9 +7,12 @@
 #define IMU_RX_PIN 4
 #define IMU_TX_PIN 5
 
-#define MOTOR_PIN_1         6
-#define MOTOR_PIN_2         7
-#define MOTOR_PIN_ENABLE_A  8
+// #define MOTOR_PIN_1         6
+// #define MOTOR_PIN_2         7
+// #define MOTOR_PIN_ENABLE_A  8
+#define MOTOR_PIN_1         21
+#define MOTOR_PIN_2         20
+#define MOTOR_PIN_ENABLE_A  16
 
 IMU_Data imu_data;
 
@@ -40,8 +43,8 @@ int main(void){
         float pitch_norm = ((imu_data.pitch / 580) * 2 ) - 1;
 
         printf("Pitch norm: %f\n", pitch_norm);
-        motor.enableA = pitch_norm;
-        motor_drive(&motor);
+        motor_drive(&motor,pitch_norm);
+        sleep_ms(5000);
         //printf("hello\n\r");
     }
 }

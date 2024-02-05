@@ -21,10 +21,10 @@ void motor_driver_init(Motor *motor, int in1, int in2, int enableA);
 
 void pwm_setup();
 
-void turn_right(float a);
+void turn_right(Motor *motor, float a);
 
-void turn_left(float a);
+void turn_left(Motor *motor, float a);
 
-void stop();
+void stop(Motor *motor);
 
-void motor_drive(Motor *motor);
+void motor_drive(Motor *motor, float result_norm);
