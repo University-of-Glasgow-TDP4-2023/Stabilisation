@@ -2,7 +2,7 @@
 #include "pico/stdlib.h"
 #include "hardware/i2c.h"
 #include "include/IMU.h"
-// #include "include/motor.h"
+#include "include/motor.h"
 
 #define IMU_RX_PIN 4
 #define IMU_TX_PIN 5
@@ -24,11 +24,11 @@ int main(void){
 
     // Setup the motor driver
     // Motor motor;
-    // struct Motor motor;
-    // motor.in1 = 0;
-    // motor.in2 = 0;
-    // motor.enableA = 1;
-    // motor_driver_init(&motor, MOTOR_PIN_1, MOTOR_PIN_2, MOTOR_PIN_ENABLE_A); 
+    struct Motor motor;
+    motor.in1 = 0;
+    motor.in2 = 0;
+    motor.enableA = 1;
+    motor_driver_init(&motor, MOTOR_PIN_1, MOTOR_PIN_2, MOTOR_PIN_ENABLE_A); 
 
     // Infinite Loop
     while(1){
@@ -37,11 +37,11 @@ int main(void){
         printf("%f, %f, %f\n", imu_data.pitch, imu_data.roll, imu_data.yaw);
 
         // //normalise the value to between -1 and 1
-        // float pitch_norm = ((imu_data.pitch / 580) * 2 ) - 1;
+        float pitch_norm = ((imu_data.pitch / 580) * 2 ) - 1;
 
-        // printf("Pitch norm: %f\n", pitch_norm);
-
-        // motor_drive(pitch_norm);
+        printf("Pitch norm: %f\n", pitch_norm);
+        motor.enableA = pitch_norm;
+        motor_drive(&motor);
         //printf("hello\n\r");
     }
 }

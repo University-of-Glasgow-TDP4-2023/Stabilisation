@@ -59,8 +59,9 @@ void stop(){
     pwm_set_gpio_level(enA, 0);
 }
 
-void motor_drive(Motor *motor, uint16_t result_norm){
+void motor_drive(Motor *motor){
     // float result_norm = ((float)result * 2 * normalised_conversion_factor) - 1;
+    float result_norm = motor->enableA;
     printf("result -1 to 1 : %f \n", result_norm);
     float power = (result_norm * (wrap+1)); // gets -1 later
     printf("power %f: ", power);
@@ -77,16 +78,16 @@ void motor_drive(Motor *motor, uint16_t result_norm){
 }
 
 
-int main(){
-    stdio_init_all();
-    setup();
+// int main(){
+//     stdio_init_all();
+//     setup();
     
-    while(1){
-         uint16_t result = adc_read();
-         // 12-bit conversion, assume max value == ADC_VREF == 3.3 V
-         //  printf("Raw value: 0x%03x, voltage: %f V\n", result, result * conversion_factor); // result in voltage mode
-         get_
-         motor_drive(result);
-         sleep_ms(delay);
-    }
-}
+//     while(1){
+//          uint16_t result = adc_read();
+//          // 12-bit conversion, assume max value == ADC_VREF == 3.3 V
+//          //  printf("Raw value: 0x%03x, voltage: %f V\n", result, result * conversion_factor); // result in voltage mode
+//          get_
+//          motor_drive(result);
+//          sleep_ms(delay);
+//     }
+// }

@@ -5,6 +5,8 @@ if (TARGET tinyusb_device)
             main.c
             IMU.c
             include/IMU.h
+            motor.c
+            include/motor.h
             )
 
     # pull in common dependencies
@@ -12,6 +14,7 @@ if (TARGET tinyusb_device)
         main 
         pico_stdlib
         hardware_i2c
+        hardware_pwm
         )
 
     # enable usb output, disable uart output
