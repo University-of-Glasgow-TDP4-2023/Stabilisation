@@ -4,6 +4,7 @@
 #include "hardware/i2c.h"
 #include "include/IMU.h"
 #include "include/motor.h"
+#include "include/PID.h"
 #include "math.h"
 
 #define IMU_RX_PIN 4
@@ -38,16 +39,27 @@ int main(void){
     Motor motor;
     motor_driver_init(&motor, MOTOR_PIN_1, MOTOR_PIN_2, MOTOR_PIN_ENABLE_A);
 
+    //Setup the PID Controller
+    PIDController pid = {0};
+
+    pid.ref = 0;
+    pid.dt = 10;
+    pid.Kp = 1;
+    
     // Infinite Loop
     while(1){
         IMU_get_abs_eul_angle(&imu_data);
 
         printf("IMU: %f, %f, %f\n\r", imu_data.pitch, imu_data.roll, imu_data.yaw);
 
+        // Feed imu into PID controller
+        pid.y = imu_data.pitch;
+        step_PID_controller(&pid);
+
         //normalise the value to between -1 and 1
-        float pitch_norm = ((imu_data.pitch / 580) * 2 ) - 1;
+        float pitch_norm = ((pid.u / 580) * 2 ) - 1;
 
         motor_drive(&motor,pitch_norm);
-        sleep_ms(10);
+        sleep_ms(pid.dt);
     }
 }

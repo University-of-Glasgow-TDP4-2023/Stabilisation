@@ -5,6 +5,7 @@ if (TARGET tinyusb_device)
             main.c
             IMU.c
             motor.c
+            PID.c
             )
 
     # pull in common dependencies

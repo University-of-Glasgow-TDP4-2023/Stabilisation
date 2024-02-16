@@ -20,7 +20,6 @@ pico_sdk_init()
 add_subdirectory(picotest)
 add_subdirectory(motortest)
 add_subdirectory(pwmtest)
-add_subdirectory(PIDloop)
 add_subdirectory(prototype)
 
 add_compile_options(-Wall
