@@ -1,6 +1,6 @@
 if (TARGET tinyusb_device)
-    add_executable(PIDloop
-            PIDloop.c
+    add_executable(PID
+            PID.c
             )
 
     # pull in common dependencies
