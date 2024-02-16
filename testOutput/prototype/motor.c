@@ -8,7 +8,7 @@
 #define out2 7
 #define enA 8
 #define pot 26
-#define bounds 0.5
+#define bounds 0.05
 #define wrap 5000
 
 
@@ -29,8 +29,8 @@ void motor_driver_init(Motor *motor, int in1, int in2, int enableA){
     pwm_set_wrap(slice_num, wrap);
 
     // Intial states for pins
-    gpio_put(in1,0);
-    gpio_put(in2,0);
+    gpio_put(in1, 0);
+    gpio_put(in2, 0);
     pwm_set_gpio_level(enableA, 0);
     // pwm_set_chan_level(slice_num, PWM_CHAN_A, 100);
     pwm_set_enabled(slice_num, true);
@@ -60,7 +60,6 @@ void stop(Motor *motor){
 }
 
 void motor_drive(Motor *motor, float result_norm){
-    // float result_norm = ((float)result * 2 * normalised_conversion_factor) - 1;
     printf("result -1 to 1 : %f \n", result_norm);
     float power = (result_norm * wrap); // gets -1 later
     printf("power %f: ", power);
@@ -75,18 +74,3 @@ void motor_drive(Motor *motor, float result_norm){
         printf("Turn right\n\r");
     }
 }
-
-
-// int main(){
-//     stdio_init_all();
-//     setup();
-    
-//     while(1){
-//          uint16_t result = adc_read();
-//          // 12-bit conversion, assume max value == ADC_VREF == 3.3 V
-//          //  printf("Raw value: 0x%03x, voltage: %f V\n", result, result * conversion_factor); // result in voltage mode
-//          get_
-//          motor_drive(result);
-//          sleep_ms(delay);
-//     }
-// }

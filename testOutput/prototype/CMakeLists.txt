@@ -4,9 +4,7 @@ if (TARGET tinyusb_device)
     add_executable(main
             main.c
             IMU.c
-            include/IMU.h
             motor.c
-            include/motor.h
             )
 
     # pull in common dependencies

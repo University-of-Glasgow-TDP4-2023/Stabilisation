@@ -27,4 +27,9 @@ void turn_left(Motor *motor, float a);
 
 void stop(Motor *motor);
 
+/*! \brief Set the power to the motor
+ *
+ * \param motor         The motor handle
+ * \param result_norm   The input power to drive the motor at from -1 to 1
+ */
 void motor_drive(Motor *motor, float result_norm);
