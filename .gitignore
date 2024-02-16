@@ -2,3 +2,4 @@
 build
 testOutput/build/*
 pico-sdk
+build
