@@ -21,6 +21,7 @@ add_subdirectory(picotest)
 add_subdirectory(motortest)
 add_subdirectory(pwmtest)
 add_subdirectory(PIDloop)
+add_subdirectory(prototype)
 
 add_compile_options(-Wall
         -Wno-format          # int != int32_t as far as the compiler is concerned because gcc has int32_t as long int
