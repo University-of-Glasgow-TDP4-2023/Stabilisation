@@ -7,9 +7,9 @@ typedef struct PIDController {
 
     double previous_error;
     double integral_error;
-    double u;
-    double y;
-    double ref;
+    double u;                   // Output
+    double y;                   // Sensor data
+    double ref;                 // Reference
 
     int dt;
 
