@@ -73,7 +73,7 @@ void IMU_I2C_init(int rx_pin, int tx_pin){
 // Get the absolute orientation from the IMU
 void IMU_get_abs_eul_angle(IMU_Data *data)
 {
-    printf("getting the angle\n\r");
+    // printf("getting the angle\n\r");
     uint8_t euler[6]; // Store data from the 6 acceleration registers
     int16_t eulX, eulY, eulZ; // Combined 3 axis data
     uint8_t eul_val = 0x1a; // Start register address 0x1A

@@ -44,22 +44,28 @@ int main(void){
 
     pid.ref = 0;
     pid.dt = 10;
-    pid.Kp = 1;
+    pid.Kp = 0.1;
+    pid.Ki = 0.01;
     
     // Infinite Loop
     while(1){
         IMU_get_abs_eul_angle(&imu_data);
 
-        printf("IMU: %f, %f, %f\n\r", imu_data.pitch, imu_data.roll, imu_data.yaw);
+        //printf("IMU: %f, %f, %f\n\r", imu_data.pitch, imu_data.roll, imu_data.yaw);
+        printf("Yaw: %f\n\r", imu_data.yaw);
 
         // Feed imu into PID controller
-        pid.y = imu_data.pitch;
+        pid.y = imu_data.yaw;
         step_PID_controller(&pid);
 
-        //normalise the value to between -1 and 1
-        float pitch_norm = ((pid.u / 580) * 2 ) - 1;
+        // normalise the value to between -1 and 1
+        //float pitch_norm = ((pid.u / 580) * 2 ) - 1;
 
-        motor_drive(&motor,pitch_norm);
+        // Normalise the yaw value from +/-290 to +/-1
+        float yaw_norm = (pid.u/290);
+
+        motor_drive(&motor,yaw_norm);
+
         sleep_ms(pid.dt);
     }
 }
