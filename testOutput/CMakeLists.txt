@@ -17,9 +17,6 @@ set(PICO_EXAMPLES_PATH ${PROJECT_SOURCE_DIR})
 pico_sdk_init()
 
 # Add hello world example
-add_subdirectory(picotest)
-add_subdirectory(motortest)
-add_subdirectory(pwmtest)
 add_subdirectory(prototype)
 
 add_compile_options(-Wall
