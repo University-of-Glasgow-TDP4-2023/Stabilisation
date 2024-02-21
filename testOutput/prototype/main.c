@@ -49,14 +49,12 @@ int main(void){
     pid.Ki = 0.01;
 
     char interupt;
-    // interupt = getchar();
-    // if (interupt == '\n')
     
     // Infinite Loop
     while(1){
         interupt = getchar_timeout_us(0);
-        if (interupt == ' '){
-            input();
+        if (interupt != 255 && interupt > 0){
+            input(&pid);
         }
         IMU_get_abs_eul_angle(&imu_data);
 
