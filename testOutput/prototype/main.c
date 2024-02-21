@@ -5,6 +5,7 @@
 #include "include/IMU.h"
 #include "include/motor.h"
 #include "include/PID.h"
+#include "include/serial.h"
 #include "math.h"
 
 #define IMU_RX_PIN 4
@@ -46,9 +47,17 @@ int main(void){
     pid.dt = 10;
     pid.Kp = 0.1;
     pid.Ki = 0.01;
+
+    char interupt;
+    // interupt = getchar();
+    // if (interupt == '\n')
     
     // Infinite Loop
     while(1){
+        interupt = getchar_timeout_us(0);
+        if (interupt == ' '){
+            input();
+        }
         IMU_get_abs_eul_angle(&imu_data);
 
         //printf("IMU: %f, %f, %f\n\r", imu_data.pitch, imu_data.roll, imu_data.yaw);
