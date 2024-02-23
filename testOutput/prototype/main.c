@@ -43,7 +43,15 @@ int main(void){
     //Setup the PID Controller
     PIDController pid = {0};
 
-    pid.ref = 0;
+   
+    for (int i = 0; i < 15; i++) {
+        IMU_get_abs_eul_angle(&imu_data);
+        sleep_ms(100);
+    }
+    IMU_get_abs_eul_angle(&imu_data);
+    printf("Ref Yaw: %f\n\r", imu_data.yaw);
+
+    pid.ref = imu_data.yaw;
     pid.dt = 10;
     pid.Kp = 0.1;
     pid.Ki = 0.01;
@@ -52,6 +60,8 @@ int main(void){
     
     // Infinite Loop
     while(1){
+        
+        //serial comms, if any key is pressed
         interupt = getchar_timeout_us(0);
         if (interupt != 255 && interupt > 0){
             input(&pid);
@@ -59,7 +69,8 @@ int main(void){
         IMU_get_abs_eul_angle(&imu_data);
 
         //printf("IMU: %f, %f, %f\n\r", imu_data.pitch, imu_data.roll, imu_data.yaw);
-        printf("Yaw: %f\n\r", imu_data.yaw);
+        printf("PID ref %f,Kp %f,Ki %f,Kd %f, ", pid.ref, pid.Kp, pid.Ki, pid.Kd);
+        printf("Yaw: %f , ", imu_data.yaw);
 
         // Feed imu into PID controller
         pid.y = imu_data.yaw;

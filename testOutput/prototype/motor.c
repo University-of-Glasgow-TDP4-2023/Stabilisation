@@ -60,8 +60,8 @@ void stop(Motor *motor){
 }
 
 void motor_drive(Motor *motor, float result_norm){
-    printf("result -1 to 1 : %f \n", result_norm);
-    float power = (result_norm * wrap); // gets -1 later
+    printf("result -1 to 1 : %f , ", result_norm);
+    float power = (result_norm  * wrap); // gets -1 later
     printf("power %f: ", power);
     if (result_norm <= bounds && result_norm >= (- bounds)) {
         stop(motor);
