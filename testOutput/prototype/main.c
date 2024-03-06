@@ -11,8 +11,8 @@
 #define IMU_RX_PIN 4
 #define IMU_TX_PIN 5
 
-#define USING_BREADBOARD
-//#define USING_PCB
+// #define USING_BREADBOARD
+#define USING_PCB
 
 #ifdef USING_BREADBOARD
 #define MOTOR_PIN_1         6
@@ -64,7 +64,7 @@ int main(void){
         //serial comms, if any key is pressed
         interupt = getchar_timeout_us(0);
         if (interupt != 255 && interupt > 0){
-            input(&pid);
+            pid = input(pid);
         }
         IMU_get_abs_eul_angle(&imu_data);
 

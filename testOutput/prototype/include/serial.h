@@ -1,2 +1,2 @@
 #include "PID.h"
-int input(PIDController *pid);
+PIDController input(PIDController pid);

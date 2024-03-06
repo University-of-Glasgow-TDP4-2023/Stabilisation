@@ -2,9 +2,10 @@
 #include <string.h>
 #include "pico/stdlib.h"
 #include "include/serial.h"
+#include "hardware/pwm.h"
 
 
-int input(PIDController *pid) {
+PIDController input(PIDController pid) {
     char userInput[4];
     double k;
 
@@ -19,10 +20,13 @@ int input(PIDController *pid) {
             printf("Entered: %lf\n", k);
 
             if (!k) {
-                break;
+                return pid;
             }
             else{
-                pid->Kp;
+                pid.Kp = k;
+                pid.integral_error = 0;
+                pid.previous_error = 0;
+                return pid;
             }
         }
         if (strcmp(userInput,"ki") == 0) {
@@ -31,10 +35,13 @@ int input(PIDController *pid) {
             printf("Entered: %lf\n", k);
 
             if (!k) {
-                break;
+                return pid;
             }
             else{
-                pid->Ki;
+                pid.Ki = k;
+                pid.integral_error = 0;
+                pid.previous_error = 0;
+                return pid;
             }
         }
         if (strcmp(userInput,"kd") == 0) {
@@ -43,14 +50,34 @@ int input(PIDController *pid) {
             printf("Entered: %lf\n", k);
 
             if (!k) {
-                break;
+                return pid;
             }
             else{
-                pid->Kd;
+                pid.Kd = k;
+                pid.integral_error = 0;
+                pid.previous_error = 0;
+                return pid;
+            }
+        }
+        if (strcmp(userInput,"pwm") == 0) {
+            printf("Testing PWM output\n");
+            scanf("%lf", &k);
+            printf("Entered: %lf\n", k);
+
+            if (!k) {
+                return pid;
+            }
+            else{
+                char interupt = getchar_timeout_us(0);
+                while (interupt == 255){
+                    pwm_set_gpio_level(16, (int)k);
+                    interupt = getchar_timeout_us(0);
+                }
+                return pid;
             }
         }
         else{
-            break;
+            return pid;
         }
     }
 }

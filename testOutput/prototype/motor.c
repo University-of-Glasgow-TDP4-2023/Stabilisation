@@ -4,9 +4,6 @@
 #include "hardware/pwm.h"
 
 #define delay 100
-#define out1 6
-#define out2 7
-#define enA 8
 #define pot 26
 #define bounds 0.05
 #define wrap 5000
@@ -25,14 +22,13 @@ void motor_driver_init(Motor *motor, int in1, int in2, int enableA){
 
     // Setup the PWN pin
     gpio_set_function(enableA, GPIO_FUNC_PWM);
-    uint slice_num = pwm_gpio_to_slice_num(enA);
+    uint slice_num = pwm_gpio_to_slice_num(enableA);
     pwm_set_wrap(slice_num, wrap);
 
     // Intial states for pins
     gpio_put(in1, 0);
     gpio_put(in2, 0);
     pwm_set_gpio_level(enableA, 0);
-    // pwm_set_chan_level(slice_num, PWM_CHAN_A, 100);
     pwm_set_enabled(slice_num, true);
 
     // Populate the motor handle
@@ -61,7 +57,7 @@ void stop(Motor *motor){
 
 void motor_drive(Motor *motor, float result_norm){
     printf("result -1 to 1 : %f , ", result_norm);
-    float power = (result_norm  * wrap); // gets -1 later
+    float power = (result_norm  * wrap); 
     printf("power %f: ", power);
     if (result_norm <= bounds && result_norm >= (- bounds)) {
         stop(motor);
