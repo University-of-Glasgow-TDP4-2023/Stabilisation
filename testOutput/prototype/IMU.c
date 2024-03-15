@@ -24,8 +24,14 @@ void IMU_I2C_init(int rx_pin, int tx_pin){
 
     if(chipID[0] != 0xA0){
         while(1){
+            char interupt = getchar_timeout_us(0);
+            if (interupt != 255 && interupt > 0){
+                break;
+            }
             printf("Chip ID Not Correct - Check Connection!");
             sleep_ms(5000);
+            i2c_write_blocking(I2C_PORT, IMU_I2C_ADDR, &reg, 1, true);
+            i2c_read_blocking(I2C_PORT, IMU_I2C_ADDR, chipID, 1, false);
         }
     }
 

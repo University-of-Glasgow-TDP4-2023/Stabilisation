@@ -64,7 +64,7 @@ int main(void){
         //serial comms, if any key is pressed
         interupt = getchar_timeout_us(0);
         if (interupt != 255 && interupt > 0){
-            pid = input(pid);
+            pid = input(pid, &motor);
         }
         IMU_get_abs_eul_angle(&imu_data);
 

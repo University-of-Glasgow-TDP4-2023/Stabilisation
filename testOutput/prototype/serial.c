@@ -2,15 +2,16 @@
 #include <string.h>
 #include "pico/stdlib.h"
 #include "include/serial.h"
+#include "include/motor.h"
 #include "hardware/pwm.h"
 
 
-PIDController input(PIDController pid) {
+PIDController input(PIDController pid, Motor *motor) {
     char userInput[4];
     double k;
 
     while(1){
-        printf("give me an input (kp,ki,kd) otherwise break\n");
+        printf("give me an input (kp,ki,kd,pwm,l(left),r(right),s(stop)) otherwise break\n");
         scanf("%19s", userInput);
         printf("Entered: %s\n", userInput);
 
@@ -75,6 +76,44 @@ PIDController input(PIDController pid) {
                 }
                 return pid;
             }
+        }
+        if (strcmp(userInput,"l") == 0) {
+            printf("Full speed left\n");
+            
+            char interupt = getchar_timeout_us(0);
+            while (interupt == 255){
+                turn_left(motor, 1);
+                interupt = getchar_timeout_us(0);
+            }
+            pid.integral_error = 0;
+            pid.previous_error = 0;
+            return pid;
+        }
+        if (strcmp(userInput,"r") == 0) {
+            printf("Full speed right\n");
+            turn_right(motor, 1);
+
+            char interupt = getchar_timeout_us(0);
+            while (interupt == 255){
+                turn_right(motor, -1);
+                interupt = getchar_timeout_us(0);
+            }
+            pid.integral_error = 0;
+            pid.previous_error = 0;
+            return pid;
+        }
+        if (strcmp(userInput,"s") == 0) {
+            printf("Full stop\n");
+            turn_right(motor, 1);
+
+            char interupt = getchar_timeout_us(0);
+            while (interupt == 255){
+                stop(motor);
+                interupt = getchar_timeout_us(0);
+            }
+            pid.integral_error = 0;
+            pid.previous_error = 0;
+            return pid;
         }
         else{
             return pid;

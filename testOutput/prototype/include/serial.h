@@ -1,2 +1,3 @@
 #include "PID.h"
-PIDController input(PIDController pid);
+#include "motor.h"
+PIDController input(PIDController pid, Motor *motor);
