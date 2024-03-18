@@ -18,6 +18,7 @@ pico_sdk_init()
 
 # Add hello world example
 add_subdirectory(prototype)
+add_subdirectory(../pico-stepper/lib stepper)
 
 add_compile_options(-Wall
         -Wno-format          # int != int32_t as far as the compiler is concerned because gcc has int32_t as long int

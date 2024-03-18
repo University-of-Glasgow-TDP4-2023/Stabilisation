@@ -7,6 +7,7 @@ if (TARGET tinyusb_device)
             motor.c
             PID.c
             serial.c
+            stepperMotor.c
             )
 
     # pull in common dependencies
@@ -15,6 +16,7 @@ if (TARGET tinyusb_device)
         pico_stdlib
         hardware_i2c
         hardware_pwm
+        pico-stepper
         )
 
     # enable usb output, disable uart output

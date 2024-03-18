@@ -6,6 +6,7 @@
 #include "include/motor.h"
 #include "include/PID.h"
 #include "include/serial.h"
+#include "include/stepperMotor.h"
 #include "math.h"
 
 #define IMU_RX_PIN 4
@@ -24,12 +25,23 @@
 #define MOTOR_PIN_1         21
 #define MOTOR_PIN_2         20
 #define MOTOR_PIN_ENABLE_A  16
+#define MOTOR_PIN_3         17
+#define MOTOR_PIN_4         18
+#define MOTOR_PIN_ENABLE_B  19
 #endif
 
 IMU_Data imu_data;
 
 int main(void){
     stdio_init_all(); // Initialise STD I/O for printing over serial
+    gpio_init(MOTOR_PIN_ENABLE_A);
+    gpio_set_dir(MOTOR_PIN_ENABLE_A, GPIO_OUT);
+    gpio_put(MOTOR_PIN_ENABLE_A, 1);
+    gpio_init(MOTOR_PIN_ENABLE_B);
+    gpio_set_dir(MOTOR_PIN_ENABLE_B, GPIO_OUT);
+    gpio_put(MOTOR_PIN_ENABLE_B, 1);
+
+    stepperTest();
 
     sleep_ms(5000);
 
