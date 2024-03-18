@@ -11,7 +11,7 @@ PIDController input(PIDController pid, Motor *motor) {
     double k;
 
     while(1){
-        printf("give me an input (kp,ki,kd,pwm,l(left),r(right),s(stop)) otherwise break\n");
+        printf("give me an input (kp,ki,kd,pwm,f(fullspeed),l(left),r(right),s(stop)) otherwise break\n");
         scanf("%19s", userInput);
         printf("Entered: %s\n", userInput);
 
@@ -76,6 +76,32 @@ PIDController input(PIDController pid, Motor *motor) {
                 }
                 return pid;
             }
+        }
+        if (strcmp(userInput,"f") == 0) {
+            printf("Full speed\n");
+            printf("l(left), r(right), s(stop), e(exit)\n");
+            char last_input = 255;
+            while (1){
+                char new_input = getchar_timeout_us(0);
+                if (new_input != 255){
+                    last_input = new_input;
+                }
+                if (last_input == 'l') {
+                    turn_left(motor, 1);
+                }
+                if (last_input == 'r') {
+                    turn_right(motor, -1);
+                }
+                if (last_input == 's') {
+                    stop(motor);
+                }
+                if (last_input == 'e') {
+                    break;
+                }
+            }
+            pid.integral_error = 0;
+            pid.previous_error = 0;
+            return pid;
         }
         if (strcmp(userInput,"l") == 0) {
             printf("Full speed left\n");
